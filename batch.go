@@ -13,7 +13,7 @@ package main
 // var (
 // 	userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" // Sesuaikan dengan yang ada di ENV
 // 	xIgAppId  = "936619743392459"                           // Sesuaikan dengan yang ada di ENV
-// 	cookie    = `csrftoken=eOLvV30Z7t2EvyGg2JKvsK; datr=P9XNZ7uTRFlix-_JJ1JZNz5c; ig_did=152C407D-45DE-4069-866F-7518A97E4281; ps_l=1; ps_n=1; mid=Z83VPwALAAEZPO12tKckBnJbFJYD; ds_user_id=4311759841; sessionid=4311759841%3AMZB0s5sbSnwgTu%3A16%3AAYe-oIipR6v2EbyDvGq7b_iipv7s0vUjU3YYh5L5EQ; wd=1158x311; rur="HIL\0544311759841\0541773742607:01f7ff831fcb91405236c1e459911f8338488914c60cd4ff11d4eff46fb8a6af7c05ce0c"`
+//	cookie = os.Getenv("COOKIE")
 // )
 
 // type EdgeMediaToCaption struct {
