@@ -4,9 +4,12 @@ const yargs = require('yargs');
 const fs = require('fs');
 const path = require('path');
 const { parse } = require('json2csv');
+const { time } = require('console');
 
 puppeteer.use(StealthPlugin());
-
+process.loadEnvFile();
+const xIgAppId = process.env.X_IG_APP_ID
+const Cookie = process.env.COOKIE
 const argv = yargs
     .option('u', { alias: 'username', type: 'string', demandOption: true })
     .option('q', { alias: 'quantity', type: 'number' })
@@ -21,12 +24,26 @@ const argv = yargs
     .help()
     .argv;
 
+function sleep(time = 2000) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 async function scrapeInstagramByQuantity(username, postCount) {
-    const browser = await puppeteer.launch({ headless: "new" });
+    const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
 
     await page.goto(`https://www.instagram.com/${username}/`, { waitUntil: 'domcontentloaded' });
-
+    await page.setExtraHTTPHeaders(
+        {
+            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+            "X-IG-App-ID": xIgAppId,
+            "X-Fb-Lsd": "-iD--QFPNXFv0VPZEPRRf7",
+            "X-Asbd-Id": "359341",
+            "Set-Fetch-Site":"same-origin",
+            "sec-ch-ua-mobile":"?0",
+            // "Cookie":Cookie
+        }
+    )
     await page.waitForSelector('article a', { timeout: 60000 }).catch(() => {
         console.error("Elemen postingan tidak ditemukan atau akun private!");
         process.exit(1);
@@ -38,6 +55,7 @@ async function scrapeInstagramByQuantity(username, postCount) {
         let newPosts = await page.evaluate(() => {
             return [...document.querySelectorAll('article a')].map(post => ({ link: post.href }));
         });
+        await sleep(3000);
 
         newPosts.forEach(urlObj => postUrls.add(urlObj.link));
 

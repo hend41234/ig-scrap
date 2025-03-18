@@ -3,6 +3,7 @@ const yargs = require('yargs');
 const fs = require('fs');
 const path = require('path');
 const { parse } = require('json2csv');
+const { timeEnd } = require('console');
 
 // Parsing command line arguments
 const argv = yargs
@@ -44,6 +45,10 @@ const argv = yargs
     .help()
     .argv;
 
+
+function sleep(time = 2000) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
 // Fungsi untuk menyimpan hasil
 function saveResults(data, filename, type) {
     if (!filename) return;
@@ -61,12 +66,15 @@ function saveResults(data, filename, type) {
 
 // Fungsi untuk scrape berdasarkan jumlah postingan
 async function scrapeInstagramByQuantity(username, postCount) {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
 
     await page.goto(`https://www.instagram.com/${username}/`, { waitUntil: 'networkidle2' });
 
-    await page.waitForSelector('article a');
+    await page.waitForSelector('article a',{timeout: 60000}).catch(() => {
+        console.error("Elemen postingan tidak ditemukan atau akun private!");
+        process.exit(1);
+    });
 
     let postUrls = new Set();
 
@@ -74,7 +82,7 @@ async function scrapeInstagramByQuantity(username, postCount) {
         let newPosts = await page.evaluate(() => {
             return [...document.querySelectorAll('article a')].map(post => ({ link: post.href }));
         });
-
+        await sleep(3000);
         newPosts.forEach(urlObj => postUrls.add(urlObj.link));
 
         console.log(`Total post terkumpul: ${postUrls.size}`);
@@ -83,7 +91,7 @@ async function scrapeInstagramByQuantity(username, postCount) {
             await page.evaluate(() => {
                 window.scrollTo(0, document.body.scrollHeight);
             });
-            await page.waitForTimeout(2000);
+            await page.waitForTimeout(60000);
         }
     }
 
