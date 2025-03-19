@@ -23,6 +23,5 @@ node ptr.js --help
 go run main.go -list path/to/list.json -save name_file.json
 ```
 
-the `ptr.js`, its only first result of page. and `sometimes` when use to faster, it will it be suspend the your IP. and waiting for a minute or hours to using again.
 
 
