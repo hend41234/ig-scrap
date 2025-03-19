@@ -1,12 +1,14 @@
 # to get link post, run the ptr.js / ptr_extra.js
     
+* with account
 ```bash
-node ptr.js -u username -q 10 --sv output_name -t json
+node ptr_extra.js -u username -q 10 -e your_username_or_email_instagram -p your_password_instagram --sv output_name -t json
 ```
 or
 
+* without account
 ```bash
-node ptr.js -u username -s yyyy-mm-dd --sv outpur -t json
+node ptr.js -u username -s yyyy-mm-dd --sv output -t json
 ```
 
 for detail run :
@@ -21,8 +23,6 @@ node ptr.js --help
 go run main.go -list path/to/list.json -save name_file.json
 ```
 
+the `ptr.js`, its only first result of page. and `sometimes` when use to faster, it will it be suspend the your IP. and waiting for a minute or hours to using again.
 
-sometimes instagram blocked the browser, if using abnormal.
-contrib? contact :
 
-hendri41234@gmail.com

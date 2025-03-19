@@ -1,4 +1,6 @@
 .env
 output.csv
 output.json
-urls.jsonS
+urls.json
+cookies.json
+cookie_ptr.json
