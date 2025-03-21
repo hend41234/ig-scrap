@@ -15,7 +15,7 @@ for detail run :
 ```bash
 node ptr.js --help
 ```
-
+if it has been run before, and saves the cookie. u dont need -e and -p
 
 # to get link video from link post, you can run :
 
